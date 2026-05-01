@@ -1,0 +1,30 @@
+
+================================================================================
+ERROR LOGGED: 2026-05-01T07:32:14.185Z
+================================================================================
+Error Name: Error
+Error Message: Missing authorization code
+
+Stack Trace:
+Error: Missing authorization code
+    at Server.<anonymous> (file:///home/drone/.nvm/versions/node/v24.15.0/lib/node_modules/bobshell/bundle/bob.js:2107:209)
+    at Server.emit (node:events:509:28)
+    at parserOnIncoming (node:_http_server:1213:12)
+    at HTTPParser.parserOnHeadersComplete (node:_http_common:125:17)
+================================================================================
+
+
+================================================================================
+ERROR LOGGED: 2026-05-01T07:39:27.479Z
+================================================================================
+Error Name: Error
+Error Message: Missing authorization code
+
+Stack Trace:
+Error: Missing authorization code
+    at Server.<anonymous> (file:///home/drone/.nvm/versions/node/v24.15.0/lib/node_modules/bobshell/bundle/bob.js:2088:209)
+    at Server.emit (node:events:509:28)
+    at parserOnIncoming (node:_http_server:1213:12)
+    at HTTPParser.parserOnHeadersComplete (node:_http_common:125:17)
+================================================================================
+
