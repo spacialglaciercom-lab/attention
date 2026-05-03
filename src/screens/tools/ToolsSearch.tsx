@@ -1,11 +1,11 @@
 import React, { useState, useMemo } from 'react';
-import { View, Text, StyleSheet, TextInput, ScrollView, FlatList } from 'react-native';
+import { View, Text, StyleSheet, TextInput, ScrollView, FlatList, TouchableOpacity } from 'react-native';
 import { COLORS, SPACING, BORDER_RADIUS } from '../../theme';
 import { FilterChip } from './FilterChip';
 import { ToolListItem } from './ToolListItem';
 import { TOOLS } from '../../constants/toolsMockData';
 import { ToolFilter } from '../../types/tools';
-import { ArrowLeft } from 'lucide-react-native';
+import { ArrowLeft, Search, XCircle } from 'lucide-react-native';
 
 interface ToolsSearchProps {
   onBackPress: () => void;
@@ -46,10 +46,19 @@ export const ToolsSearch: React.FC<ToolsSearchProps> = ({ onBackPress }) => {
     <ToolListItem tool={item} onPress={() => {}} />
   );
 
+  const clearSearch = () => {
+    setSearchQuery('');
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
-        <TouchableOpacity style={styles.backButton} onPress={onBackPress}>
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={onBackPress}
+          accessibilityLabel="Go back"
+          accessibilityRole="button"
+        >
           <ArrowLeft size={24} color={COLORS.text} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Search Tools</Text>
@@ -57,29 +66,45 @@ export const ToolsSearch: React.FC<ToolsSearchProps> = ({ onBackPress }) => {
       </View>
 
       <View style={styles.searchContainer}>
-        <TextInput
-          style={styles.searchInput}
-          placeholder="Search tools..."
-          placeholderTextColor={COLORS.secondaryText}
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-        />
+        <View style={styles.searchWrapper}>
+          <Search size={20} color={COLORS.secondaryText} style={styles.searchIcon} />
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Search tools..."
+            placeholderTextColor={COLORS.secondaryText}
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+            accessibilityLabel="Search tools input"
+          />
+          {searchQuery.length > 0 && (
+            <TouchableOpacity
+              onPress={clearSearch}
+              style={styles.clearButton}
+              accessibilityLabel="Clear search text"
+              accessibilityRole="button"
+            >
+              <XCircle size={20} color={COLORS.secondaryText} />
+            </TouchableOpacity>
+          )}
+        </View>
       </View>
 
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.filtersContainer}
-      >
-        {FILTERS.map((filter) => (
-          <FilterChip
-            key={filter.id}
-            label={filter.label}
-            isSelected={activeFilter === filter.id}
-            onPress={() => setActiveFilter(filter.id)}
-          />
-        ))}
-      </ScrollView>
+      <View>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.filtersContainer}
+        >
+          {FILTERS.map((filter) => (
+            <FilterChip
+              key={filter.id}
+              label={filter.label}
+              isSelected={activeFilter === filter.id}
+              onPress={() => setActiveFilter(filter.id)}
+            />
+          ))}
+        </ScrollView>
+      </View>
 
       <FlatList
         data={filteredTools}
@@ -128,19 +153,31 @@ const styles = StyleSheet.create({
     paddingHorizontal: SPACING.lg,
     marginBottom: SPACING.md,
   },
-  searchInput: {
+  searchWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: COLORS.surface,
     borderRadius: BORDER_RADIUS.md,
+    borderWidth: 0.5,
+    borderColor: COLORS.specular,
     paddingHorizontal: SPACING.md,
+  },
+  searchIcon: {
+    marginRight: SPACING.sm,
+  },
+  searchInput: {
+    flex: 1,
     paddingVertical: SPACING.md,
     fontSize: 16,
     color: COLORS.text,
-    borderWidth: 0.5,
-    borderColor: COLORS.specular,
+  },
+  clearButton: {
+    padding: SPACING.xs,
+    marginLeft: SPACING.xs,
   },
   filtersContainer: {
     paddingHorizontal: SPACING.lg,
-    marginBottom: SPACING.md,
+    paddingBottom: SPACING.md,
   },
   listContent: {
     paddingHorizontal: SPACING.lg,
